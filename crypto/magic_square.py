@@ -41,6 +41,7 @@ def do_magic(string, magic):
     encrypted_string = ''
     for i in range(len(string)):
         encrypted_string += string[magic[i] - 1]
+    print('len_e=', len(encrypted_string), encrypted_string)
     return encrypted_string
 
 
@@ -54,7 +55,7 @@ def do_magic_again(string, magic):
     for key in sorted(decrypted_hash):
         decrypted_string += decrypted_hash[key]
 
-    print(decrypted_string)
+    print('len_d=', len(decrypted_string), decrypted_string)
     return decrypted_string.replace('*', '')
 
 
@@ -71,34 +72,48 @@ def check_length(string, length):
 
 def encrypt_by_block(source_string, size=5):
     string = source_string
+    length = len(string)
     encrypted_string = ''
     str_len = size ** 2
     iterator = 0
-    while iterator < len(string):
+    t_l = str_len - iterator
+    while iterator < length:
+        t_l = str_len - iterator
         temp = string[iterator:str_len]
         encrypted_string += encrypt(temp)
         iterator += str_len
-        str_len += str_len + 1
+        if str_len + str_len + 1 <=length:
+            str_len += str_len + 1
+        else:
+
+            str_len = length
+    len_e = len(encrypted_string)
     print (encrypted_string, len(encrypted_string))
     return encrypted_string
 
 def decrypt_by_block(source_string, size=5):
     string = source_string
-    l = len(string)
+    length = len(string)
     decrypted_string = ''
     str_len = size**2
     iterator = 0
-    while iterator < len(string):
+    while iterator < length:
         temp = string[iterator:str_len]
         decrypted_string += decrypt(temp)
-        iterator += str_len
-        str_len += str_len + 1
-    print (decrypted_string)
+        iterator = str_len
+        if str_len + str_len + 1 < length:
+            str_len += str_len + 1
+        else:
+            str_len = length
+
+    print(decrypted_string)
     return decrypted_string
 
 
 
 poem ="And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle"
+#
+
 # A thing of soft misnomers, so divine
 # That silly youth doth think to make itself
 # Divine by loving, and so goes on
@@ -108,5 +123,11 @@ poem ="And what is love? It is a doll dressed up For idleness to cosset, nurse, 
 # Till Cleopatra lives at Number Seven,
 # And Antony resides in Brunswick Square."""
 
-decrypt_by_block(encrypt_by_block(poem))
+print('len_o: ',len(poem))
+
+encrypt_by_block(poem)
+
+
+#decrypt_by_block(encrypt_by_block(poem))
+
 
