@@ -41,7 +41,7 @@ def do_magic(string, magic):
     encrypted_string = ''
     for i in range(len(string)):
         encrypted_string += string[magic[i] - 1]
-    print('len_e=', len(encrypted_string), encrypted_string)
+    # print('len_e=', len(encrypted_string), encrypted_string)
     return encrypted_string
 
 
@@ -55,7 +55,7 @@ def do_magic_again(string, magic):
     for key in sorted(decrypted_hash):
         decrypted_string += decrypted_hash[key]
 
-    print('len_d=', len(decrypted_string), decrypted_string)
+   # print('len_d=', len(decrypted_string), decrypted_string)
     return decrypted_string.replace('*', '')
 
 
@@ -75,59 +75,62 @@ def encrypt_by_block(source_string, size=5):
     length = len(string)
     encrypted_string = ''
     str_len = size ** 2
-    iterator = 0
-    t_l = str_len - iterator
-    while iterator < length:
-        t_l = str_len - iterator
-        temp = string[iterator:str_len]
+    str_begin = 0
+    str_end = str_len
+    t_l = str_end - str_begin
+    while str_begin < length:
+        t_l = str_end - str_begin
+        temp = string[str_begin:str_end]
         encrypted_string += encrypt(temp)
-        iterator += str_len
-        if str_len + str_len + 1 <=length:
-            str_len += str_len + 1
+        str_begin = str_end
+        if str_begin + str_len <= length:
+            str_end += str_len
         else:
+            str_end = length+1
 
-            str_len = length
     len_e = len(encrypted_string)
-    print (encrypted_string, len(encrypted_string))
+    print (encrypted_string)
+    print('')
     return encrypted_string
 
 def decrypt_by_block(source_string, size=5):
     string = source_string
     length = len(string)
     decrypted_string = ''
-    str_len = size**2
-    iterator = 0
-    while iterator < length:
-        temp = string[iterator:str_len]
+    str_len = size ** 2
+    str_end = str_len
+    str_begin = 0
+    while str_begin < length:
+        temp = string[str_begin:str_end]
         decrypted_string += decrypt(temp)
-        iterator = str_len
-        if str_len + str_len + 1 < length:
-            str_len += str_len + 1
+        str_begin = str_end
+        if str_end + str_len <= length:
+            str_end += str_len
         else:
-            str_len = length
+            str_end = length+1
 
     print(decrypted_string)
     return decrypted_string
 
 
 
-poem ="And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle"
-#
+poem ="""And what is love?
+It is a doll dressed up 
+For idleness to cosset, nurse, and dandle
+A thing of soft misnomers, so divine
+That silly youth doth think to make itself
+Divine by loving, and so goes on
+Yawning and doting a whole summer long,
+Till Miss's comb is made a perfect tiara,
+And common Wellingtons turn Romeo boots;
+Till Cleopatra lives at Number Seven,
+And Antony resides in Brunswick Square."""
 
-# A thing of soft misnomers, so divine
-# That silly youth doth think to make itself
-# Divine by loving, and so goes on
-# Yawning and doting a whole summer long,
-# Till Miss's comb is made a perfect tiara,
-# And common Wellingtons turn Romeo boots;
-# Till Cleopatra lives at Number Seven,
-# And Antony resides in Brunswick Square."""
+# print('len_o: ',len(poem))
 
-print('len_o: ',len(poem))
-
-encrypt_by_block(poem)
+# encrypt_by_block(poem)
 
 
-#decrypt_by_block(encrypt_by_block(poem))
+decrypt_by_block(encrypt_by_block(poem))
 
 
